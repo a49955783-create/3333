@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background: url('/background-police.png') center/cover no-repeat fixed;
+  color: white;
+  direction: rtl;
+  font-family: 'Tajawal', sans-serif;
+  min-height: 100vh;
+}
+
+.glow {
+  filter: drop-shadow(0 0 6px rgba(0, 160, 255, 0.8));
+  animation: pulse 2s infinite alternate;
+}
+
+@keyframes pulse {
+  from {
+    filter: drop-shadow(0 0 6px rgba(0, 160, 255, 0.8));
+  }
+  to {
+    filter: drop-shadow(0 0 14px rgba(0, 200, 255, 1));
+  }
+}
