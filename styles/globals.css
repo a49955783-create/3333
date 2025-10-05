@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ⚙️ إعداد الخلفية العامة للموقع */
+/* خلفية الموقع العامة */
 body {
   @apply bg-[#0a0f1a] text-white min-h-screen font-sans overflow-x-hidden;
   background-image: url("/background-police.png");
@@ -11,7 +11,7 @@ body {
   background-attachment: fixed;
 }
 
-/* 🎥 شكل الانترو */
+/* الانترو */
 .intro {
   @apply flex flex-col items-center justify-center text-center min-h-screen bg-black;
 }
@@ -24,14 +24,14 @@ body {
   @apply text-3xl md:text-5xl font-bold text-blue-400 drop-shadow-md;
 }
 
-/* ✨ تأثير اللمعان Glow */
+/* تأثير الإضاءة (Glow) */
 .glow {
   text-shadow: 0 0 10px rgba(0, 162, 255, 0.7),
                0 0 20px rgba(0, 162, 255, 0.5),
                0 0 40px rgba(0, 162, 255, 0.3);
 }
 
-/* 🧱 الجداول */
+/* الجداول */
 table {
   @apply w-full text-sm text-left border-collapse;
 }
@@ -40,12 +40,12 @@ th, td {
   @apply border border-gray-700 px-4 py-2;
 }
 
-/* 🎛️ أزرار عامة */
+/* الأزرار */
 button {
   @apply px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-700 transition text-white font-medium;
 }
 
-/* 📱 تحسين العرض على الجوال */
+/* الجوال */
 @media (max-width: 768px) {
   body {
     background-attachment: scroll;

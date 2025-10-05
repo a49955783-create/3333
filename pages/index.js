@@ -13,13 +13,11 @@ export default function PoliceOps() {
   const [supervisor, setSupervisor] = useState("");
   const [supervisorCode, setSupervisorCode] = useState("");
 
-  // ✅ الانترو يظهر أول 3 ثواني ثم يختفي تلقائياً
   useEffect(() => {
     const timer = setTimeout(() => setShowIntro(false), 3000);
     return () => clearTimeout(timer);
   }, []);
 
-  // ✅ معالجة الصورة المرفوعة أو الملصقة
   const handleImage = (file) => {
     setProgress(0);
     Tesseract.recognize(file, "ara+eng", {
@@ -42,7 +40,6 @@ export default function PoliceOps() {
     });
   };
 
-  // ✅ دعم اللصق Ctrl+V
   useEffect(() => {
     const pasteHandler = (e) => {
       const item = e.clipboardData.items[0];
@@ -54,20 +51,17 @@ export default function PoliceOps() {
     return () => window.removeEventListener("paste", pasteHandler);
   }, []);
 
-  // ✅ رفع الصورة من الجهاز
   const handleUpload = (e) => {
     const file = e.target.files[0];
     if (file) handleImage(file);
   };
 
-  // ✅ تحديث صفوف الجدول
   const updateRow = (id, key, value) => {
     setRows((prev) =>
       prev.map((row) => (row.id === id ? { ...row, [key]: value } : row))
     );
   };
 
-  // ✅ إضافة صف جديد
   const addRow = () => {
     setRows((prev) => [
       ...prev,
@@ -75,7 +69,6 @@ export default function PoliceOps() {
     ]);
   };
 
-  // ✅ دمج سطرين لو الحالة مشتركة
   const mergeRows = (i1, i2) => {
     const r1 = rows[i1];
     const r2 = rows[i2];
@@ -90,12 +83,8 @@ export default function PoliceOps() {
     setRows([...updated, merged]);
   };
 
-  // ✅ حذف صف
-  const deleteRow = (id) => {
-    setRows(rows.filter((r) => r.id !== id));
-  };
+  const deleteRow = (id) => setRows(rows.filter((r) => r.id !== id));
 
-  // ✅ توليد النتيجة النهائية
   const generateResult = () => {
     if (!officer.trim()) return "❗الرجاء كتابة اسم العمليات";
 
@@ -128,7 +117,7 @@ ${format(inField)}
 ${
   shared.length
     ? `وحدات مشتركة:\n${shared
-        .map((r) => `${r.name} ${r.code}${r.location ? ` - (${r.location})` : ""}`)
+        .map((r) => `${r.name}${r.location ? ` - (${r.location})` : ""}`)
         .join("\n")}`
     : ""
 }
@@ -140,7 +129,6 @@ ${format(off)}
 `;
   };
 
-  // ✅ نسخ النتيجة
   const copyResult = () => {
     navigator.clipboard.writeText(generateResult());
     alert("تم النسخ بنجاح ✅");
@@ -148,75 +136,28 @@ ${format(off)}
 
   return (
     <div className="p-6 text-white">
-      {/* 🟢 الانترو */}
       {showIntro ? (
         <div className="intro">
-          <img
-            src="/logo-police.png"
-            alt="Police Logo"
-            className="intro-logo glow"
-          />
+          <img src="/logo-police.png" alt="Police Logo" className="intro-logo glow" />
           <h1 className="intro-title glow">تحديث مركز العمليات للشرطة</h1>
         </div>
       ) : (
         <>
-          {/* 🔵 الحقول */}
           <div className="grid md:grid-cols-3 gap-4 mb-6">
-            <input
-              placeholder="اسم العمليات"
-              value={officer}
-              onChange={(e) => setOfficer(e.target.value)}
-              className="p-2 bg-gray-900 border border-gray-700 rounded"
-            />
-            <input
-              placeholder="الكود"
-              value={officerCode}
-              onChange={(e) => setOfficerCode(e.target.value)}
-              className="p-2 bg-gray-900 border border-gray-700 rounded"
-            />
-            <input
-              placeholder="النائب"
-              value={deputy}
-              onChange={(e) => setDeputy(e.target.value)}
-              className="p-2 bg-gray-900 border border-gray-700 rounded"
-            />
-            <input
-              placeholder="كود النائب"
-              value={deputyCode}
-              onChange={(e) => setDeputyCode(e.target.value)}
-              className="p-2 bg-gray-900 border border-gray-700 rounded"
-            />
-            <input
-              placeholder="مسؤول الفترة"
-              value={supervisor}
-              onChange={(e) => setSupervisor(e.target.value)}
-              className="p-2 bg-gray-900 border border-gray-700 rounded"
-            />
-            <input
-              placeholder="كود المسؤول"
-              value={supervisorCode}
-              onChange={(e) => setSupervisorCode(e.target.value)}
-              className="p-2 bg-gray-900 border border-gray-700 rounded"
-            />
+            <input placeholder="اسم العمليات" value={officer} onChange={(e) => setOfficer(e.target.value)} className="p-2 bg-gray-900 border border-gray-700 rounded" />
+            <input placeholder="الكود" value={officerCode} onChange={(e) => setOfficerCode(e.target.value)} className="p-2 bg-gray-900 border border-gray-700 rounded" />
+            <input placeholder="النائب" value={deputy} onChange={(e) => setDeputy(e.target.value)} className="p-2 bg-gray-900 border border-gray-700 rounded" />
+            <input placeholder="كود النائب" value={deputyCode} onChange={(e) => setDeputyCode(e.target.value)} className="p-2 bg-gray-900 border border-gray-700 rounded" />
+            <input placeholder="مسؤول الفترة" value={supervisor} onChange={(e) => setSupervisor(e.target.value)} className="p-2 bg-gray-900 border border-gray-700 rounded" />
+            <input placeholder="كود المسؤول" value={supervisorCode} onChange={(e) => setSupervisorCode(e.target.value)} className="p-2 bg-gray-900 border border-gray-700 rounded" />
           </div>
 
-          {/* 🟡 رفع الصورة */}
           <div className="mb-4">
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleUpload}
-              className="mb-2"
-            />
-            <p className="text-gray-400">
-              يمكنك رفع صورة أو لصقها مباشرة بـ Ctrl+V
-            </p>
-            {progress > 0 && progress < 100 && (
-              <p className="text-blue-400 mt-2">جارٍ الاستخراج... {progress}%</p>
-            )}
+            <input type="file" accept="image/*" onChange={handleUpload} className="mb-2" />
+            <p className="text-gray-400">يمكنك رفع صورة أو لصقها مباشرة بـ Ctrl+V</p>
+            {progress > 0 && progress < 100 && <p className="text-blue-400 mt-2">جارٍ الاستخراج... {progress}%</p>}
           </div>
 
-          {/* 🧱 جدول */}
           <table className="w-full bg-gray-900 rounded-lg overflow-hidden shadow-lg">
             <thead>
               <tr className="bg-gray-800 text-blue-400">
@@ -230,28 +171,10 @@ ${format(off)}
             <tbody>
               {rows.map((row, i) => (
                 <tr key={row.id}>
+                  <td><input value={row.name} onChange={(e) => updateRow(row.id, "name", e.target.value)} className="bg-transparent border-b border-gray-600 w-full" /></td>
+                  <td><input value={row.code} onChange={(e) => updateRow(row.id, "code", e.target.value)} className="bg-transparent border-b border-gray-600 w-full" /></td>
                   <td>
-                    <input
-                      value={row.name}
-                      onChange={(e) => updateRow(row.id, "name", e.target.value)}
-                      className="bg-transparent border-b border-gray-600 w-full"
-                    />
-                  </td>
-                  <td>
-                    <input
-                      value={row.code}
-                      onChange={(e) => updateRow(row.id, "code", e.target.value)}
-                      className="bg-transparent border-b border-gray-600 w-full"
-                    />
-                  </td>
-                  <td>
-                    <select
-                      value={row.status}
-                      onChange={(e) =>
-                        updateRow(row.id, "status", e.target.value)
-                      }
-                      className="bg-gray-800 border border-gray-700 rounded px-2 py-1"
-                    >
+                    <select value={row.status} onChange={(e) => updateRow(row.id, "status", e.target.value)} className="bg-gray-800 border border-gray-700 rounded px-2 py-1">
                       <option>في الخدمة</option>
                       <option>مشغول</option>
                       <option>مشغول - تدريب</option>
@@ -263,13 +186,7 @@ ${format(off)}
                     </select>
                   </td>
                   <td>
-                    <select
-                      value={row.location}
-                      onChange={(e) =>
-                        updateRow(row.id, "location", e.target.value)
-                      }
-                      className="bg-gray-800 border border-gray-700 rounded px-2 py-1"
-                    >
+                    <select value={row.location} onChange={(e) => updateRow(row.id, "location", e.target.value)} className="bg-gray-800 border border-gray-700 rounded px-2 py-1">
                       <option></option>
                       <option>الشمال</option>
                       <option>الجنوب</option>
@@ -282,9 +199,7 @@ ${format(off)}
                   </td>
                   <td className="flex gap-2">
                     <button onClick={() => deleteRow(row.id)}>🗑️</button>
-                    {i < rows.length - 1 && (
-                      <button onClick={() => mergeRows(i, i + 1)}>🔗</button>
-                    )}
+                    {i < rows.length - 1 && <button onClick={() => mergeRows(i, i + 1)}>🔗</button>}
                   </td>
                 </tr>
               ))}
@@ -296,12 +211,7 @@ ${format(off)}
             <button onClick={copyResult}>📋 نسخ النتيجة</button>
           </div>
 
-          {/* 🧾 النتيجة النهائية */}
-          <textarea
-            readOnly
-            value={generateResult()}
-            className="w-full mt-6 bg-gray-900 p-3 rounded-lg h-64 text-sm border border-gray-700"
-          />
+          <textarea readOnly value={generateResult()} className="w-full mt-6 bg-gray-900 p-3 rounded-lg h-64 text-sm border border-gray-700" />
           {results && <p className="text-green-400 mt-2">{results}</p>}
         </>
       )}
